@@ -1,0 +1,52 @@
+<div class='row'>
+    <div class='col-sm-6 col-sm-offset-3'>
+        <h1>Add Funds</h1>
+        <div id="add-funds-wrapper" class='well'>
+            <p>
+            Use this to fund your account and continue to use our services. We only accept
+            payments greater than 10$, and any failed exercise attempts will be donated 100%
+            to charity.
+            </p>
+            <form id="add-funds" class="form" method="post" 
+                action="<?php echo $this->url(array('controller'=>'funds', 'action'=>'add'), null, true) ?>">
+                <div class='form-group'>
+                    <label>Amount($)</label>
+                    <input required id="add-funds-amount" type="number" name='amount' min="10" />
+                </div>
+                <div class='form-group'>
+                    <input class='btn btn-primary' type='submit' value='Add Funds!' />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class='col-sm-6 col-sm-offset-3'>
+        <h1>Your Progress</h1>
+        <div class='well'>
+        
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$("#add-funds").submit(function(e) {
+
+    var self = $(this);
+	$.post($(this).attr('action'), $(this).serialize()).success(function(data) {
+		data = JSON.parse(data);
+		console.log(data);
+	    if(data['status'] == 200)
+	    {
+		    self.find("input[type='submit']")
+		      .attr('disabled', 'disabled')
+		      .attr('value', 'Success!');
+		    $(".funds .available").text(data['free']);
+		    var alert = $("<p class='alert alert-success'>Funds Added Successfully.</p>");
+		    $("#add-funds-wrapper").prepend(alert);
+	    }
+	});
+    e.preventDefault();
+    return false;
+});
+</script>
