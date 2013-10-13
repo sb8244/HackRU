@@ -45,7 +45,7 @@ class Application_Model_VerifyLocation
                     $processedTask[] = $task;
                 }
                 else if($task['completed'] === false && 
-                    $task['end'] < $time )
+                    $task['end'] < $time - 3600*24 )
                 {
                     $this->user['tasks'][$key]['completed'] = true;
                     $this->user['tasks'][$key]['success'] = false;
@@ -57,6 +57,29 @@ class Application_Model_VerifyLocation
         }
         $userModel->saveUser($this->user);
         return true;
+    }
+    
+    public function forceOverrideVerifiedTasksFourSquare()
+    {
+    	$userModel = new Application_Model_User();
+    	$moneyPool = new Application_Model_MoneyPool();
+    	$time = time();
+    	
+		foreach($this->tasks as $key=>$task)
+		{
+			if( $task['completed'] === false &&
+			$task['start'] <= $time)
+			{
+			    $this->user['tasks'][$key]['completed'] = true;
+                $this->user['tasks'][$key]['success'] = false;
+                $this->user['money']['onhold'] -= $task['wager'];
+                $moneyPool->addMoneyToPool($task['wager']);
+                
+			}
+		}
+    	
+    	$userModel->saveUser($this->user);
+    	return true;
     }
 }
 

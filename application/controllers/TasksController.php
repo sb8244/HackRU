@@ -29,6 +29,11 @@ class TasksController extends Zend_Controller_Action
         {
             $start = strtotime($start);
             $end = strtotime($end);
+            if($user['money']['free'] < $wager)
+            {
+                $this->redirect('/user/settings');
+                die();    
+            }
             
             $task = array(
                     'category' => $category,

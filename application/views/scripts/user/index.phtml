@@ -50,7 +50,7 @@
                                 <h3>Create Goal</h3>
                             </button>
                             <button id="check-4sq" class='btn btn-primary'>
-                                <h3>4Square Sync</h3>
+                                <h3>foursquare Sync</h3>
                             </button>
                         </div>
                     </li>
@@ -60,7 +60,7 @@
                     <?php foreach($this->todayTasks as $task) { ?>
                     <?php $class = $task['completed'] ? "completed" : "incomplete" ?>
                     <li class="clearfix to-do <?php echo $class; ?>">
-                        <img class='pull-left' src="img/4sq/<?php echo $task['category'] ?>.jpg" />
+                        <img class='pull-left' src="/hackru/public/img/4sq/<?php echo $task['category'] ?>.jpg" />
                         <ul>
                             <li>Goal: <?php echo $task['title'] ?></li>
                             <li>@ <?php echo $task['category-name'] ?></li>
@@ -77,14 +77,30 @@
 <div class="row bottom">
     <div class="col-sm-4">
         <div class="col-sm-12">
-            1
+            <?php $a = array_shift($this->top); ?>
+            <img class='pull-left' src="/hackru/public/img/4sq/<?php echo $a['id'] ?>.jpg" />
+            <ul class='padding-left-100'>
+                <li>You've completed <strong><?php echo $a['count'] ?></strong></li>
+                <li><?php echo $a['name'] ?> activities</li>
+            </ul>
         </div>
     </div>
     <div class="col-sm-4">
-        2
+            <?php $a = array_shift($this->top); ?>
+            <img class='pull-left' src="/hackru/public/img/4sq/<?php echo $a['id'] ?>.jpg" />
+            <ul class='padding-left-100'>
+                <li>You've completed <strong><?php echo $a['count'] ?></strong></li>
+                <li><?php echo $a['name'] ?> activities</li>
+            </ul>
     </div>
     <div class="col-sm-4">
-        3
+         <img class='pull-left' src="/hackru/public/img/red-x.jpg" />
+            <ul class='padding-left-100'>
+                <li>
+                    <strong>$<?php echo $this->missed['sum'] ?></strong> lost over 
+                    <strong><?php echo $this->missed['count'] ?></strong> incomplete goals.
+                </li>
+            </ul>
     </div>
 </div>
 
@@ -133,7 +149,7 @@ $('#calendar').fullCalendar({
             }
         ?>
         {
-            title: '<?php echo $task['title'] ?>',
+            title: '<?php echo $task['title'] . " - $" . $task['wager'] ?>',
             start : '<?php echo date("Y-m-d", $task['start']) ?>',
             end : '<?php echo date("Y-m-d", $task['end']) ?>',
             <?php if ($color) { ?>
@@ -145,5 +161,5 @@ $('#calendar').fullCalendar({
         <?php } ?>
     ],
 });
-$('#calendar').fullCalendar('option', 'height', .8*600);
+$('#calendar').fullCalendar('option', 'height', 400);
 </script>
