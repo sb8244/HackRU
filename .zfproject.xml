@@ -34,6 +34,7 @@
       <modelsDirectory>
         <modelFile modelName="User"/>
         <modelFile modelName="FourSquare"/>
+        <modelFile modelName="VerifyLocation"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <servicesDirectory enabled="false"/>

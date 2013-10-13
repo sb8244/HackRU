@@ -7,7 +7,8 @@
     <div class="col-sm-5 fill-height">
         <div class="vert-center-10 daily-wrapper">
             <div class='secondary'>
-                <form class='form'>
+                <form class='form' id='add-task-form' method='post'
+                    action='<?php echo $this->url(array('controller'=>'tasks', 'action'=>'add'), null, true)?>'>
                     <div class='form-group'>
                         <label>FourSquare Category</label>
                         <select name='category' required class='form-control'>
@@ -25,6 +26,14 @@
                         <input value='1' name='wager' class='form-control' type='number' required min='.5' step='.5'/>
                     </div>
                     <div class='form-group'>
+                        <label>Start Time</label>
+                        <input class='date form-control' name='start' value='' required type='text' />
+                    </div>
+                    <div class='form-group'>
+                        <label>End Time</label>
+                        <input class='date form-control' name='end' value='' required type='text' />
+                    </div>
+                    <div class='form-group'>
                         <button class='btn btn-primary btn-lg btn-block' 
                             type='submit'><h3>Create</h3></button>
                     </div>
@@ -33,6 +42,7 @@
                             Cancel
                         </button>
                     </div>
+                    <input type='hidden' name='redirect' value='<?php echo $this->url(array('controller'=>'user', 'action'=>'index'), null, true) ?>'/>
                 </form>
             </div>
             <div class='main hidden'>
@@ -103,4 +113,9 @@ $("#cancel").click(function(e) {
     e.preventDefault();
     return false;
 });
+
+$(".date").datepicker({
+	dateFormat: 'yy-mm-dd'
+});
+
 </script>

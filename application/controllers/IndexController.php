@@ -10,9 +10,30 @@ class IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        // action body
+        $fsModel = new Application_Model_FourSquare();
+        $fsModel->loadSession();
+        $res = $fsModel->getSelfCheckins();
     }
 
-
+    public function callbackAction()
+    {
+        $user = $this->getInvokeArg('bootstrap')->getResource('currentUser');
+        $fsModel = new Application_Model_FourSquare();
+        $code = $this->_getParam("code");
+        if($code)
+        {
+            $fsModel->setTokenFromCode($code);
+        }
+        
+        $checkins = $fsModel->getSelfCheckins();
+        
+        if($checkins)
+        {
+            $verifyModel = new Application_Model_VerifyLocation($user);
+            $verifyModel->getVerifiedTasksFourSquare($checkins);
+        }
+        
+        die();
+    }
 }
 

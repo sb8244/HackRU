@@ -33,5 +33,19 @@ class Application_Model_User
         }
         throw new Exception("User or amount was not given");
     }
+    
+    public function addTaskToUser($user, $task)
+    {
+        if($user != null && $task != null)
+        {
+            $id = $user['_id'];
+            $push = array(
+                  '$push' => array ('tasks' => $task)
+            );
+            return $this->db->collection->update(array("_id"=>$id), $push);
+        }
+        throw new Exception("Shit");
+    }
+    
 }
 
