@@ -6,7 +6,6 @@
         <link href="http://getbootstrap.com/dist/css/bootstrap.css"
         	rel="stylesheet" type="text/css" />
 		<link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.css" rel="stylesheet" type="text/css" />
-		<link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.print.css " rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js" />
         <script src="http://getbootstrap.com/dist/js/bootstrap.js"></script>
         
@@ -19,6 +18,9 @@
             	src: url("/hackru/public/pn.otf") format("opentype");	
             }
             
+            h1,h2,h3,h4,h5,h6 {
+            	font-family: ProximaNova;            	
+            }
             html, body, .container { 
             	font-family: ProximaNova;
             	padding-top: 5px;
@@ -131,16 +133,5 @@
             </div>        
             <?php echo $this->layout()->content; ?>
         </div>
-        
-        <script type="text/javascript">
-		$(document).ready(function() 
-		{
-			// page is now ready, initialize the calendar...
-			$('#calendar').fullCalendar(
-			{
-				// put your options and callbacks here
-			});
-		});
-		</script>
     </body>
 </html>

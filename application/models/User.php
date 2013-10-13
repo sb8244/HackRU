@@ -10,6 +10,11 @@ class Application_Model_User
         $this->db = $m->selectDB('hackru');
     }
     
+    public function create($user)
+    {
+        
+    }
+    
     public function findOne($id)
     {
         if($id)
@@ -35,9 +40,12 @@ class Application_Model_User
             );
             $res = $this->db->collection->findOne($query, $projection);
             $wager = 0;
-            foreach($res['tasks'] as $task)
+            if(is_array($res['tasks']))
             {
-                $wager += $task['wager'];
+                foreach($res['tasks'] as $task)
+                {
+                    $wager += $task['wager'];
+                }
             }
             return $wager;
         }
@@ -51,12 +59,18 @@ class Application_Model_User
             $ret = array();
             $now = time();
             
+            $fourSqModel = new Application_Model_FourSquare();
+            $categories = $fourSqModel->getAllowedCategories();
+            
         	foreach($user['tasks'] as $task)
         	{
         	    //doing this to adjust for the fact that a date is set to midnight
         	    // but must be midnight of the next day
-        	    if($task['start'] <= $now && $task['end'] >= $now - 3600*24)
+        	    if($task['completed'] === false && 
+        	       $task['start'] <= $now && 
+        	       $task['end'] >= $now - 3600*24)
         	    {
+        	        $task['category-name'] = $categories[$task['category']];
         	        $ret[] = $task;
         	    }
         	}
@@ -79,6 +93,34 @@ class Application_Model_User
         throw new Exception("User or amount was not given");
     }
     
+    public function editFreeMoney($user, $amount)
+    {
+        if($user != null && $amount != null)
+        {
+        	$amount = (int)$amount;
+        	$id = $user['_id'];
+        	$incAll = array(
+        			'$inc' => array('money.free' => $amount)
+        	);
+        	return $this->db->collection->update(array("_id"=>$id), $incAll);
+        }
+        throw new Exception("User or amount was not given");
+    }
+    
+    public function editHeldMoney($user, $amount)
+    {
+    	if($user != null && $amount != null)
+    	{
+    		$amount = (int)$amount;
+    		$id = $user['_id'];
+    		$incAll = array(
+    				'$inc' => array('money.onhold' => $amount)
+    		);
+    		return $this->db->collection->update(array("_id"=>$id), $incAll);
+    	}
+    	throw new Exception("User or amount was not given");
+    }
+    
     public function addTaskToUser($user, $task)
     {
         if($user != null && $task != null)
@@ -87,10 +129,23 @@ class Application_Model_User
             $push = array(
                   '$push' => array ('tasks' => $task)
             );
-            return $this->db->collection->update(array("_id"=>$id), $push);
+            $this->db->collection->update(array("_id"=>$id), $push);
+            
+            $this->editFreeMoney($user, -1 * $task['wager']);
+            $this->editHeldMoney($user, $task['wager']);
+            
+            return true;
         }
         throw new Exception("Shit");
     }
     
+    public function saveUser($user)
+    {
+        if($user)
+        {
+            return $this->db->collection->save($user);
+        }
+        throw new Exception("New User");
+    }
 }
 

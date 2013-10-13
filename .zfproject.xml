@@ -35,6 +35,7 @@
         <modelFile modelName="User"/>
         <modelFile modelName="FourSquare"/>
         <modelFile modelName="VerifyLocation"/>
+        <modelFile modelName="MoneyPool"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <servicesDirectory enabled="false"/>

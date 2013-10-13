@@ -77,8 +77,7 @@ class Application_Model_FourSquare
         {
             $this->redirect();
         }
-        
-        
+       
         return $res['response']['checkins']['items'];
     }
     
@@ -112,7 +111,6 @@ class Application_Model_FourSquare
         $results['4bf58dd8d48988d172941735'] = 'Post Office';
         $results['4bf58dd8d48988d131941735'] = 'Spiritual Center';
         $results['4bf58dd8d48988d17c941735'] = 'Casino';
-        
         return $results;
     }
 }

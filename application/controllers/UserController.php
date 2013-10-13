@@ -21,6 +21,8 @@ class UserController extends Zend_Controller_Action
         
         $todayTasks = $userModel->getTodaysTasksForUser($user);
         $this->view->todayTasks = $todayTasks;
+        
+        $this->view->allTasks = $user['tasks'];
     }
 
     public function settingsAction()

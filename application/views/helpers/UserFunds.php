@@ -11,7 +11,7 @@ class Zend_View_Helper_UserFunds extends Zend_View_Helper_Abstract
 	    {
 	        $userModel = new Application_Model_User();
     	    $available = '$' . number_format($user['money']['free'], 2);
-    	    $held = '$' . number_format($userModel->getHeldFundsForUser($user), 2);
+    	    $held = '$' . number_format($user['money']['onhold'], 2);
     	    
     	    $html .= "<span class='funds'>";
     	       $html .= "<span class='available'>" . $available . "</span>";

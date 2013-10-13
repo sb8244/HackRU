@@ -15,7 +15,5 @@ class HelperController extends Zend_Controller_Action
         
         die(json_encode($categories));
     }
-
-
 }
 

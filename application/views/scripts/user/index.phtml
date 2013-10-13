@@ -22,7 +22,7 @@
                     </div>
                     <div class='form-group'>
                         <label>Wager ($)</label>
-                        <input value='1' name='wager' class='form-control' type='number' required min='.5' step='.5'/>
+                        <input value='1' name='wager' class='form-control' type='number' required min='1' step='1'/>
                     </div>
                     <div class='form-group'>
                         <input placeholder="Start Date" class='date form-control' name='start' value='' required type='text' />
@@ -45,11 +45,17 @@
             <div class='main'>
                 <ul>
                     <li class='margin-bottom-30'>
-                        <button id="create-goal" class='btn btn-primary btn-lg btn-block'>
-                            <h3>Create Goal</h3>
-                        </button>
+                        <div class='btn-group btn-group-lg btn-group-block'>
+                            <button id="create-goal" class='btn btn-primary'>
+                                <h3>Create Goal</h3>
+                            </button>
+                            <button id="check-4sq" class='btn btn-primary'>
+                                <h3>4Square Sync</h3>
+                            </button>
+                        </div>
                     </li>
                 </ul>
+                <h2>Today's Unfinished Goals</h2>
                 <ul style="height: 392px; overflow: auto;">
                     <?php foreach($this->todayTasks as $task) { ?>
                     <?php $class = $task['completed'] ? "completed" : "incomplete" ?>
@@ -57,6 +63,7 @@
                         <img class='pull-left' src="img/4sq/<?php echo $task['category'] ?>.jpg" />
                         <ul>
                             <li>Goal: <?php echo $task['title'] ?></li>
+                            <li>@ <?php echo $task['category-name'] ?></li>
                             <li>Due: <?php echo date('m-d-Y',$task['end']) ?></li>
                             <li class="stake">Wager: $<?php echo number_format($task['wager'], 2) ?></li>
                         </ul>
@@ -87,6 +94,9 @@ $("#create-goal").click(function() {
 	$(".secondary").toggleClass("hidden");
 });
 
+$("#check-4sq").click(function() {
+	window.location.href = '<?php echo $this->url(array('action'=>'callback'), null, true)?>';
+});
 $("#cancel").click(function(e) {
 	$(".main").toggleClass("hidden");
 	$(".secondary").toggleClass("hidden");
@@ -98,5 +108,42 @@ $("#cancel").click(function(e) {
 $(".date").datepicker({
 	dateFormat: 'yy-mm-dd'
 });
-
+$('#calendar').fullCalendar({
+	height: 500,
+    events: [
+        <?php foreach($this->allTasks as $task) { ?>
+        <?php 
+            $color = '#d9edf7';
+            $textColor = '#3a87ad';
+            $border = '#bce8f1';
+            if($task['completed'])
+            {
+                if($task['success'])
+                {
+                    $color = '#dff0d8';
+                    $textColor = '#468847';
+                    $border = '#d6e9c6';
+                }
+                else
+                {
+                    $color = '#f2dede';
+                    $textColor = '#b94a48';
+                    $border = '#eed3d7';
+                }
+            }
+        ?>
+        {
+            title: '<?php echo $task['title'] ?>',
+            start : '<?php echo date("Y-m-d", $task['start']) ?>',
+            end : '<?php echo date("Y-m-d", $task['end']) ?>',
+            <?php if ($color) { ?>
+            color: '<?php echo $color ?>',
+            textColor: '<?php echo $textColor?>',
+            borderColor: '<?php echo $border?>',
+            <?php } ?>
+        },
+        <?php } ?>
+    ],
+});
+$('#calendar').fullCalendar('option', 'height', .8*600);
 </script>
