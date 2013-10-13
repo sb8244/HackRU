@@ -1,3 +1,4 @@
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <div class='row'>
     <div class='col-sm-6 col-sm-offset-3'>
         <h1>Add Funds</h1>
@@ -11,7 +12,19 @@
                 action="<?php echo $this->url(array('controller'=>'funds', 'action'=>'add'), null, true) ?>">
                 <div class='form-group'>
                     <label>Amount($)</label>
-                    <input required id="add-funds-amount" type="number" name='amount' min="10" />
+                    <input class='form-control'  required id="add-funds-amount" type="number" name='amount' min="10" />
+                </div>
+                <div class='form-group'>
+                    <label>Card Number</label>
+                    <input class='form-control' required type="text" name='card' />
+                </div>
+                <div class='form-group'>
+                    <label>MM</label>
+                    <input class='form-control'  required type="text" name='month' />
+                </div>
+                <div class='form-group'>
+                    <label>YYYY</label>
+                    <input class='form-control'  required type="text" name='year' />
                 </div>
                 <div class='form-group'>
                     <input class='btn btn-primary' type='submit' value='Add Funds!' />
@@ -25,20 +38,54 @@
 $("#add-funds").submit(function(e) {
 
     var self = $(this);
-	$.post($(this).attr('action'), $(this).serialize()).success(function(data) {
-		data = JSON.parse(data);
-		console.log(data);
-	    if(data['status'] == 200)
-	    {
-		    self.find("input[type='submit']")
+
+    var card = self.find("input[name='card']").val();
+    var mm = self.find("input[name='month']").val();
+    var yyyy = self.find("input[name='year']").val();
+
+    Stripe.card.createToken({
+        number: card,
+        exp_month: mm,
+        exp_year: yyyy
+    }, function(status, response) {
+        if(response.error)
+        {
+            console.log(response.error);
+        }
+        else
+        {
+            var token = response['id'];
+            self.find("input[type='submit']")
 		      .attr('disabled', 'disabled')
-		      .attr('value', 'Success!');
-		    $(".funds .available").text(data['free']);
-		    var alert = $("<p class='alert alert-success'>Funds Added Successfully.</p>");
-		    $("#add-funds-wrapper").prepend(alert);
-	    }
-	});
+		      .attr('value', 'Wait for it...');
+            $.post(self.attr('action'), self.serialize() + "&token=" + token)
+             .success(function(data) {
+        		data = JSON.parse(data);
+        		self.parent().find(".alert").remove();
+        	    if(data['status'] == 200)
+        	    {
+        		    self.find("input[type='submit']")
+        		      .attr('disabled', 'disabled')
+        		      .attr('value', 'Success!');
+        		    $(".funds .available").text(data.free);
+        		    var alert = $("<p class='alert alert-success'>Funds Added Successfully.</p>");
+        		    $("#add-funds-wrapper").prepend(alert);
+        	    }
+        	    else
+        	    {  
+        	    	var alert = $("<p class='alert alert-danger'>" + data.error + "</p>");
+        		    $("#add-funds-wrapper").prepend(alert);
+        		    self.find("input[type='submit']")
+        		      .attr('disabled', null)
+        		      .attr('value', 'Add Funds!');
+        	    }
+        	});
+        }
+    });
+	
     e.preventDefault();
     return false;
 });
+
+Stripe.setPublishableKey("pk_test_czwzkTp2tactuLOEOqbMTRzG");
 </script>
