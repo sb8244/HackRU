@@ -13,7 +13,9 @@ class UserController extends Zend_Controller_Action
     public function indexAction()
     {
         $user = $this->getInvokeArg('bootstrap')->getResource('currentUser');
-        
+        $fourSq = new Application_Model_FourSquare();
+        $categories = $fourSq->getAllowedCategories();
+        $this->view->categories = $categories;
     }
 
     public function settingsAction()

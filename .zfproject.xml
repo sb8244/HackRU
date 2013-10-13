@@ -18,6 +18,12 @@
         <controllerFile controllerName="Funds">
           <actionMethod actionName="index"/>
         </controllerFile>
+        <controllerFile controllerName="Helper">
+          <actionMethod actionName="index"/>
+        </controllerFile>
+        <controllerFile controllerName="Tasks">
+          <actionMethod actionName="index"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
       <layoutsDirectory>
@@ -27,6 +33,7 @@
       </layoutsDirectory>
       <modelsDirectory>
         <modelFile modelName="User"/>
+        <modelFile modelName="FourSquare"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <servicesDirectory enabled="false"/>
@@ -45,6 +52,12 @@
             <viewScriptFile forActionName="settings"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Funds">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Helper">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Tasks">
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>

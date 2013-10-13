@@ -6,41 +6,81 @@
     </div> 
     <div class="col-sm-5 fill-height">
         <div class="vert-center-10 daily-wrapper">
-            <ul>
-				<li class="clearfix to-do">
-					<img class='pull-left' src="img/weight.jpg">
-					<ul>
-						<li>Goal: Lift weights at gym</li>
-						<li>Due: 10/18/2013</li>
-						<li class="stake">Stake: $1.00</li>
-					</ul>
-				</li>
-				
-				<li class="clearfix to-do">
-					<img class='pull-left' src="img/weight.jpg">
-					<ul>
-						<li>Goal: Lift weights at gym</li>
-						<li>Due: 10/18/2013</li>
-						<li class="stake">Stake: $1.00</li>
-					</ul>
-				</li>
-				
-				<li class="clearfix to-do">
-					<img class='pull-left' src="img/weight.jpg">
-					<ul>
-						<li>Goal: Lift weights at gym</li>
-						<li>Due: 10/18/2013</li>
-						<li class="stake">Stake: $1.00</li>
-					</ul>
-				</li>
-				
-			</ul>
+            <div class='secondary'>
+                <form class='form'>
+                    <div class='form-group'>
+                        <label>FourSquare Category</label>
+                        <select name='category' required class='form-control'>
+                            <?php foreach($this->categories as $id => $name) { ?>
+                            <option value=<?php echo $id ?>><?php echo $name ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class='form-group'>
+                        <label>Duration (Minutes)</label>
+                        <input value='30' name='duration' class='form-control' type='number' required min='0' step='15' />
+                    </div>
+                    <div class='form-group'>
+                        <label>Wager ($)</label>
+                        <input value='1' name='wager' class='form-control' type='number' required min='.5' step='.5'/>
+                    </div>
+                    <div class='form-group'>
+                        <button class='btn btn-primary btn-lg btn-block' 
+                            type='submit'><h3>Create</h3></button>
+                    </div>
+                    <div class='form-group'>
+                        <button id='cancel' class='btn btn-lg btn-block btn-default'>
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class='main hidden'>
+                <ul>
+                    <li class='margin-bottom-30'>
+                        <button id="create-goal" class='btn btn-primary btn-lg btn-block'>
+                            <h3>Create Goal</h3>
+                        </button>
+                    </li>
+                </ul>
+                <ul style="height: 392px; overflow: auto;">
+                    
+    				<li class="clearfix to-do">
+    					<img class='pull-left' src="img/weight.jpg">
+    					<ul>
+    						<li>Goal: Lift weights at gym</li>
+    						<li>Due: 10/18/2013</li>
+    						<li class="stake">Stake: $1.00</li>
+    					</ul>
+    				</li>
+    				
+    				<li class="clearfix to-do">
+    					<img class='pull-left' src="img/weight.jpg">
+    					<ul>
+    						<li>Goal: Lift weights at gym</li>
+    						<li>Due: 10/19/2013</li>
+    						<li class="stake">Stake: $1.00</li>
+    					</ul>
+    				</li>
+    				
+    				<li class="clearfix to-do">
+    					<img class='pull-left' src="img/weight.jpg">
+    					<ul>
+    						<li>Goal: Lift weights at gym</li>
+    						<li>Due: 10/20/2013</li>
+    						<li class="stake">Stake: $1.00</li>
+    					</ul>
+    				</li>
+    			</ul>
+            </div>
         </div>
     </div>
 </div>
 <div class="row bottom">
     <div class="col-sm-4">
-        1
+        <div class="col-sm-12">
+            1
+        </div>
     </div>
     <div class="col-sm-4">
         2
@@ -49,3 +89,18 @@
         3
     </div>
 </div>
+
+<script type="text/javascript">
+$("#create-goal").click(function() {
+	$(".main").toggleClass("hidden");
+	$(".secondary").toggleClass("hidden");
+});
+
+$("#cancel").click(function(e) {
+	$(".main").toggleClass("hidden");
+	$(".secondary").toggleClass("hidden");
+	
+    e.preventDefault();
+    return false;
+});
+</script>

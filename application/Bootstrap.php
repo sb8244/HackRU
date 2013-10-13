@@ -19,5 +19,25 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
         return $user;
     }
+    
+    public function _initCache()
+    {
+    	$frontendOptions = array(
+    			'lifetime' => 3600 * 24 * 5, // cache lifetime of 5 days
+    			'automatic_serialization' => true
+    	);
+    
+    	$backendOptions = array(
+    			'cache_dir' => '../tmp/' // Directory where to put the cache files
+    	);
+    
+    	// getting a Zend_Cache_Core object
+    	$cache = Zend_Cache::factory('Core',
+    			'File',
+    			$frontendOptions,
+    			$backendOptions);
+    
+    	Zend_Registry::set('cache', $cache);
+    }
 }
 
