@@ -30,7 +30,8 @@ class IndexController extends Zend_Controller_Action
         if($checkins)
         {
             $verifyModel = new Application_Model_VerifyLocation($user);
-            $verifyModel->getVerifiedTasksFourSquare($checkins);
+            $verified = $verifyModel->getVerifiedTasksFourSquare($checkins);
+            print_r($verified);
         }
         
         die();

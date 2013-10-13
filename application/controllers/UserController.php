@@ -14,8 +14,13 @@ class UserController extends Zend_Controller_Action
     {
         $user = $this->getInvokeArg('bootstrap')->getResource('currentUser');
         $fourSq = new Application_Model_FourSquare();
+        $userModel = new Application_Model_User();
+        
         $categories = $fourSq->getAllowedCategories();
         $this->view->categories = $categories;
+        
+        $todayTasks = $userModel->getTodaysTasksForUser($user);
+        $this->view->todayTasks = $todayTasks;
     }
 
     public function settingsAction()
